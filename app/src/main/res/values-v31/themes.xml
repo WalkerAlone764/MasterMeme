@@ -4,6 +4,7 @@
     <style name="Theme.MasterMeme" parent="android:Theme.Material.Light.NoActionBar">
         <item name="android:windowSplashScreenAnimatedIcon">@drawable/splash_logo</item>
         <item name="android:windowSplashScreenIconBackgroundColor">@color/white</item>
+
     </style>
 
 </resources>
