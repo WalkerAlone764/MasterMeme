@@ -1,5 +1,6 @@
 package com.upsidedowndev.mastermeme.ui.theme
 
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 
 val Purple80 = Color(0xFFD0BCFF)
@@ -11,5 +12,10 @@ val PurpleGrey40 = Color(0xFF625b71)
 val Pink40 = Color(0xFF7D5260)
 
 object MyAppColor {
-    val onPrimarySurface = Color(29, 27, 32)
+    val buttonGradientColor = Brush.linearGradient(
+        colors = listOf(
+            Color(0xffeaddff),
+            Color(0xffd0bcfe)
+        )
+    )
 }

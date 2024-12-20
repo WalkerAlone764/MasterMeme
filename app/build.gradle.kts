@@ -92,5 +92,7 @@ dependencies {
     //splashscreen
     implementation(libs.androidx.core.splashscreen)
 
+    implementation("io.coil-kt.coil3:coil-compose:3.0.4")
+
 
 }

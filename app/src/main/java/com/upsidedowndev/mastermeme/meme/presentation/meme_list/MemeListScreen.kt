@@ -32,12 +32,12 @@ fun MemeListScreen(
                 }
             )
         },
-        floatingActionButtonPosition = FabPosition.EndOverlay
+        floatingActionButtonPosition = FabPosition.EndOverlay,
+        containerColor = MaterialTheme.colorScheme.surface
     ) { innerPadding ->
         Column(
             modifier = modifier
                 .padding(innerPadding)
-                .background(MaterialTheme.colorScheme.surface)
                 .fillMaxSize()
         ) {
             EmptyListComponent()

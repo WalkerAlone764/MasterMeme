@@ -5,6 +5,23 @@
         <item name="android:windowSplashScreenAnimatedIcon">@drawable/splash_logo</item>
         <item name="android:windowSplashScreenIconBackgroundColor">@color/white</item>
 
+<!--        <item name="android:navigationBarColor">-->
+<!--            @color/black-->
+<!--        </item>-->
+
+<!--        &lt;!&ndash; Optional: set to transparent if your app is drawing behind the status bar. &ndash;&gt;-->
+<!--        <item name="android:statusBarColor">-->
+<!--            @color/white-->
+<!--        </item>-->
+
+<!--        &lt;!&ndash; Optional: set for a light status bar with dark content. &ndash;&gt;-->
+<!--        <item name="android:windowLightStatusBar">-->
+<!--            true-->
+<!--        </item>-->
+
+<!--        <item name="android:enforceNavigationBarContrast">false</item>-->
+<!--        <item name="android:windowTranslucentStatus">true</item>-->
+
     </style>
 
 </resources>

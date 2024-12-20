@@ -13,22 +13,21 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import com.upsidedowndev.mastermeme.meme.presentation.meme_list.MemeListScreen
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
 import com.upsidedowndev.mastermeme.meme.presentation.navigation.SetupNavigation
 import com.upsidedowndev.mastermeme.ui.theme.MasterMemeTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         installSplashScreen()
+        WindowCompat.setDecorFitsSystemWindows(window, false)
         enableEdgeToEdge()
         setContent {
             val activity = LocalContext.current as ComponentActivity
-            activity.enableEdgeToEdge(
-                SystemBarStyle.dark(
-                    Color.White.toArgb(),
-                )
-            )
 
             MasterMemeTheme {
                 SetupNavigation()
