@@ -1,26 +1,22 @@
 package com.upsidedowndev.mastermeme.meme.presentation.create_meme
 
-import androidx.compose.foundation.border
+import android.util.Log
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.graphics.layer.GraphicsLayer
 import androidx.compose.ui.graphics.rememberGraphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.upsidedowndev.mastermeme.R
 import com.upsidedowndev.mastermeme.meme.presentation.create_meme.component.CreateMemeBottomBar
 import com.upsidedowndev.mastermeme.meme.presentation.create_meme.component.CreateMemeContentForStockImages
@@ -37,26 +33,53 @@ fun CreateMemeScreen(
     uiState: CreateMemeState,
     graphicsLayer: GraphicsLayer,
     scope: CoroutineScope,
-    onAction: (CreateMemeAction) -> Unit
+    onAction: (CreateMemeAction) -> Unit,
+    onClickBack: () -> Unit
 ) {
+
+    LaunchedEffect(uiState) {
+        Log.d("is Test", uiState.anyTextSelected.toString())
+        val filter = uiState.memeTextList.filter { meme ->
+            meme.isSelectedTextField
+        }
+
+        Log.d("is Test filter: ", filter.size.toString())
+    }
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusManager = LocalFocusManager.current
     Scaffold(
         topBar = {
-            CreateMemeTopBar()
+            CreateMemeTopBar(
+                onClickBack = onClickBack
+            )
         },
         containerColor = MaterialTheme.colorScheme.surface,
         bottomBar = {
             CreateMemeBottomBar(
-                isTestFeatureEnabled = uiState.anyTextSelected,
+                isTestFeatureEnabled = uiState.memeTextList.any { meme ->
+                    meme.isSelectedTextField
+                },
+                fontSize = uiState.memeTextList.firstOrNull { meme ->
+                    meme.isSelectedTextField
+                }?.tempFontSize ?: 1f,
+
                 onAddTextClick = {
                     onAction(CreateMemeAction.OnClickAddText)
                 },
                 onClickSave = {
-                    onAction(CreateMemeAction.OnClickSave)
+                    onAction(CreateMemeAction.OnClickSave(graphicsLayer))
                 },
                 graphicsLayer = graphicsLayer,
-                scope = scope
+                scope = scope,
+                onUpdateFontSize = {
+                    onAction(CreateMemeAction.OnUpdateFontSize(it))
+                },
+                onDismissFontSize = {
+                    onAction(CreateMemeAction.OnDismissFontSizeChange)
+                },
+                onSuccessFontSize = {
+                    onAction(CreateMemeAction.OnSubmitFontSizeChange)
+                }
             )
         },
         modifier = Modifier
@@ -65,6 +88,7 @@ fun CreateMemeScreen(
                     onTap = {
                         focusManager.clearFocus(force = true)
                         onAction(CreateMemeAction.DismissSelection)
+                        onAction(CreateMemeAction.OnDismissFontSizeChange)
                         keyboardController?.hide()
                     }
                 )
@@ -87,7 +111,7 @@ fun CreateMemeScreen(
         }
 
         TextInputDialog(
-         isVisible = uiState.textInputDialogShown,
+            isVisible = uiState.textInputDialogShown,
             onCancel = {
                 onAction(CreateMemeAction.OnDismissTextInputDialog)
             },
@@ -104,6 +128,9 @@ fun CreateMemeScreen(
             },
             onSaveToDevice = {
                 onAction(CreateMemeAction.SaveToDevice(graphicsLayer))
+            },
+            onShareMeme = {
+                onAction(CreateMemeAction.ShareMeme(graphicsLayer))
             }
         )
     }
@@ -118,7 +145,8 @@ private fun CreateMemeListPreview() {
             uiState = CreateMemeState(),
             onAction = {},
             graphicsLayer = rememberGraphicsLayer(),
-            scope = rememberCoroutineScope()
+            scope = rememberCoroutineScope(),
+            onClickBack = {}
         )
     }
 }

@@ -7,6 +7,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
@@ -20,7 +21,8 @@ import com.upsidedowndev.mastermeme.ui.theme.manropeFamily
 
 @Composable
 fun CreateMemeTopBar(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onClickBack:() -> Unit
 ) {
     CenterAlignedTopAppBar(
         title = {
@@ -32,10 +34,14 @@ fun CreateMemeTopBar(
             )
         },
         navigationIcon = {
-            Icon(
-                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                contentDescription = null
-            )
+            IconButton(
+                onClick = onClickBack
+            ) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = null
+                )
+            }
         },
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
@@ -47,6 +53,6 @@ fun CreateMemeTopBar(
 @Composable
 private fun CreateMemeTopBarPreview() {
     MasterMemeTheme {
-        CreateMemeTopBar()
+        CreateMemeTopBar(onClickBack = {})
     }
 }

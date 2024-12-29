@@ -46,7 +46,8 @@ fun SaveMemeBottomSheet(
     isSaveBottomSheetVisible: Boolean,
     graphicsLayer: GraphicsLayer,
     onDismissSaveBottomSheet: () -> Unit,
-    onSaveToDevice: () -> Unit
+    onSaveToDevice: () -> Unit,
+    onShareMeme: () -> Unit
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
@@ -74,20 +75,22 @@ fun SaveMemeBottomSheet(
                 title = "Share the meme",
                 description = "Share your meme or open it in the other App",
                 onClick = {
-                    scope.launch {
-                        val file = File(context.cacheDir, "images.jpg")
-                        val fout = FileOutputStream(file)
-                        val bitmap = graphicsLayer.toImageBitmap()
-                        bitmap.asAndroidBitmap().compress(Bitmap.CompressFormat.JPEG, 100, fout)
-                        fout.flush()
-                        fout.close()
+//                    scope.launch {
+//                        val file = File(context.cacheDir, "images.jpg")
+//                        val fout = FileOutputStream(file)
+//                        val bitmap = graphicsLayer.toImageBitmap()
+//                        bitmap.asAndroidBitmap().compress(Bitmap.CompressFormat.JPEG, 100, fout)
+//                        fout.flush()
+//                        fout.close()
+//
+//
+//                        val share = Intent(Intent.ACTION_SEND)
+//                        share.setType("image/jpeg")
+//                        share.putExtra(Intent.EXTRA_STREAM, Uri.parse(file.path))
+//                        context.startService(Intent.createChooser(share,"share Image"))
+//                    }
 
-
-                        val share = Intent(Intent.ACTION_SEND)
-                        share.setType("image/jpeg")
-                        share.putExtra(Intent.EXTRA_STREAM, Uri.parse(file.path))
-                        context.startService(Intent.createChooser(share,"share Image"))
-                    }
+                    onShareMeme()
                 })
 
 

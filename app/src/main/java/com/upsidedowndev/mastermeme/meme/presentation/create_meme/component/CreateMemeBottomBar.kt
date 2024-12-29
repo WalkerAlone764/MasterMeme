@@ -1,7 +1,8 @@
 package com.upsidedowndev.mastermeme.meme.presentation.create_meme.component
 
-import android.graphics.Bitmap
+import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -11,17 +12,22 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.graphics.layer.GraphicsLayer
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -30,17 +36,19 @@ import com.upsidedowndev.mastermeme.core.presentation.MemeOutlineButton
 import com.upsidedowndev.mastermeme.ui.theme.MasterMemeTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import java.io.File
-import java.io.FileOutputStream
 
 @Composable
 fun CreateMemeBottomBar(
     modifier: Modifier = Modifier,
     isTestFeatureEnabled: Boolean,
+    fontSize: Float,
+    graphicsLayer: GraphicsLayer,
+    scope: CoroutineScope,
     onAddTextClick: () -> Unit,
     onClickSave: () -> Unit,
-    graphicsLayer: GraphicsLayer,
-    scope: CoroutineScope
+    onUpdateFontSize: (Float) -> Unit,
+    onDismissFontSize: () -> Unit,
+    onSuccessFontSize: () -> Unit
 ) {
     Row(
         modifier = modifier
@@ -54,7 +62,13 @@ fun CreateMemeBottomBar(
         ) {
 
         if (isTestFeatureEnabled) {
-            TextSliderBottomBar()
+            TextSliderBottomBar(
+
+                fontSize = fontSize,
+                onUpdateFontSize = onUpdateFontSize,
+                onDismissFontSize = onDismissFontSize,
+                onSuccessFontSize = onSuccessFontSize
+            )
         } else {
             DefaultBottomMenu(
                 onAddTextClick = onAddTextClick,
@@ -68,26 +82,74 @@ fun CreateMemeBottomBar(
 
 
 @Composable
-private fun TextSliderBottomBar() {
+private fun TextSliderBottomBar(
+    fontSize: Float = 1f,
+    onUpdateFontSize: (Float) -> Unit,
+    onDismissFontSize: () -> Unit,
+    onSuccessFontSize: () -> Unit
+) {
+
     Row(
         modifier = Modifier
-            .fillMaxWidth(),
+            .fillMaxSize(),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceAround
+        horizontalArrangement = Arrangement.SpaceBetween
     ) {
 
         Icon(
             imageVector = Icons.Default.Close,
-            contentDescription = "Close"
+            contentDescription = "Close",
+            modifier = Modifier
+                .clickable {
+                    onDismissFontSize()
+                }
         )
 
-        Row {
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             Text(
                 text = "Aa",
                 fontSize = 12.sp,
+                fontWeight = FontWeight.SemiBold,
+                textAlign = TextAlign.Center
+            )
+            Spacer(
+                modifier = Modifier
+                    .width(8.dp)
+            )
+            Slider(
+                value = fontSize,
+                onValueChange = {
+                    onUpdateFontSize(it)
+                },
+                valueRange = 0.5f..2f,
+                steps = 0,
+                modifier = Modifier
+                    .fillMaxWidth(0.6f)
+            )
+
+            Spacer(
+                modifier = Modifier
+                    .width(12.dp)
+            )
+
+            Text(
+                text = "Aa",
+                fontSize = 18.sp,
                 fontWeight = FontWeight.SemiBold
             )
+
         }
+
+        Icon(
+            imageVector = Icons.Default.Check,
+            contentDescription = "Check",
+            modifier = Modifier
+                .clickable {
+                    onSuccessFontSize()
+                }
+        )
 
     }
 }
@@ -101,7 +163,6 @@ private fun DefaultBottomMenu(
     scope: CoroutineScope
 ) {
 
-    val context = LocalContext.current
     Row(
         modifier = Modifier
             .fillMaxSize(),
@@ -124,23 +185,9 @@ private fun DefaultBottomMenu(
                 // Handle add image button click
                 onClickSave()
                 scope.launch {
-//                    val file = File(context.cacheDir, "images.jpg")
-//                    val fout = FileOutputStream(file)
-//                    val bitmap = graphicsLayer.toImageBitmap()
-//                    bitmap.asAndroidBitmap().compress(Bitmap.CompressFormat.JPEG, 100, fout)
-//                    fout.flush()
-//                    fout.close()
+
                 }
             }
         )
-    }
-}
-
-
-@Preview
-@Composable
-private fun CreateMemeBottomBarPreview() {
-    MasterMemeTheme {
-        TextSliderBottomBar()
     }
 }

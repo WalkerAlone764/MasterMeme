@@ -8,10 +8,10 @@ sealed class Route {
     data object MemeList: Route()
 
     @Serializable
-    data class CreateMeme(val memeId: Int, val memeStatus: MemeStatus): Route()
+    data class CreateMeme(val memeId: Int,val memeDefaultId: Int, val memeStatus: MemeStatus): Route()
 }
 
 enum class MemeStatus {
-    STORED,
-    LOCAL
+    CREATE,
+    EDIT
 }

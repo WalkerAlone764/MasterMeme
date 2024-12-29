@@ -7,7 +7,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectDragGestures
-import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.layout.Arrangement
@@ -53,7 +52,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import com.upsidedowndev.mastermeme.core.presentation.getMemeResourceList
-import com.upsidedowndev.mastermeme.meme.presentation.common.Meme
 import com.upsidedowndev.mastermeme.meme.presentation.create_meme.CreateMemeAction
 import com.upsidedowndev.mastermeme.meme.presentation.create_meme.CreateMemeState
 import com.upsidedowndev.mastermeme.meme.presentation.create_meme.MemeText
@@ -77,6 +75,8 @@ fun CreateMemeContentForStockImages(
     ) {
         Box(
             modifier = Modifier
+                .clipToBounds()
+                .aspectRatio(1f)
                 .drawWithContent {
                     // call record to capture the content in the graphics layer
                     graphicsLayer.record {
@@ -86,11 +86,11 @@ fun CreateMemeContentForStockImages(
                     // draw the graphics layer on the visible canvas
                     drawLayer(graphicsLayer)
                 }
-                .clipToBounds()
-                .aspectRatio(1f)
+
+
         ) {
             Image(
-                painter = painterResource(memeResources),
+                painter = painterResource(uiState.backgroundMeme.memeDrawable),
                 contentDescription = "",
                 modifier = Modifier
                     .fillMaxSize()
@@ -102,7 +102,7 @@ fun CreateMemeContentForStockImages(
                     MemeDraggableText(
                         state = state,
                         onDragEnd = { offset, memeText ->
-            onAction(CreateMemeAction.OnUpdatePosition(offset,memeText))
+                            onAction(CreateMemeAction.OnUpdatePosition(offset, memeText))
                         },
                         onClick = {
                             onAction(CreateMemeAction.OnSelectText(it))
@@ -200,7 +200,7 @@ private fun MemeDraggableText(
                 },
                 textStyle = TextStyle(
                     color = Color.Black,
-                    fontSize = 40.sp,
+                    fontSize = 40.sp * state.tempFontSize,
                     fontFamily = impact,
                     fontWeight = FontWeight.Medium,
                     drawStyle = Stroke(
@@ -224,29 +224,13 @@ private fun MemeDraggableText(
                             interactionSource.interactions.collect {
                                 if (it is PressInteraction.Release) {
                                     // works like onClick
-                                    Log.d("TextField","hello world")
+                                    Log.d("TextField", "hello world")
                                 }
                             }
                         }
                     }
 
-
-
             )
-//            Box(
-//                modifier = Modifier
-//                    .padding(TextFieldDefaults.contentPaddingWithoutLabel())
-//            ) {
-//                Text(
-//                    text = state.textFieldState.text.toString(),
-//                    color = Color.White,
-//                    fontSize = 40.sp,
-//                    fontFamily = impact,
-//                    fontWeight = FontWeight.Medium,
-//                    lineHeight = 40.sp,
-//
-//                )
-//            }
 
             TextField(
                 value = state.textFieldState.text.toString(),
@@ -255,16 +239,11 @@ private fun MemeDraggableText(
                 },
                 textStyle = TextStyle(
                     color = Color.White,
-                    fontSize = 40.sp,
+                    fontSize = 40.sp * state.tempFontSize,
                     fontFamily = impact,
                     fontWeight = FontWeight.Medium,
-//                    drawStyle = Stroke(
-//                        width = 20f,
-//                    ),
-//                    lineHeight = 1.sp
-//                    lineHeight = 40.sp
 
-                ),
+                    ),
 
                 colors = TextFieldDefaults.colors(
                     focusedContainerColor = Color.Transparent,

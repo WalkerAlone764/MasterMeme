@@ -13,15 +13,18 @@ fun SetupNavigation() {
         startDestination = Route.MemeList
     ) {
         memeListRoute(
-            onCreateMemeNavigation = {
+            onCreateMemeNavigation = { memeId,memeDefaultId, memeStatus ->
                 navController.navigate(Route.CreateMeme(
-                    memeId = 1,
-                    memeStatus = MemeStatus.STORED
+                    memeId = memeId,
+                    memeStatus = memeStatus,
+                    memeDefaultId = memeDefaultId
                 ))
             }
         )
 
 
-        createMemeRoute()
+        createMemeRoute(
+            navController = navController
+        )
     }
 }
