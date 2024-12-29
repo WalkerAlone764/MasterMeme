@@ -2,20 +2,28 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.daggerHiltAndroid)
+    alias(libs.plugins.room)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
     namespace = "com.upsidedowndev.mastermeme"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.upsidedowndev.mastermeme"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    room {
+        schemaDirectory("$projectDir/schemas")
     }
 
     buildTypes {
@@ -56,4 +64,37 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    //splash
+//    implementation(libs.androidx.core.splashscreen)
+
+    //dagger-hilt
+    implementation(libs.com.google.dagger.hilt.android)
+    ksp(libs.com.google.dagger.hilt.compiler)
+    implementation(libs.androidx.hilt.navigation.compose)
+
+    //Core Library Desugaring
+    coreLibraryDesugaring(libs.desugar.jdk.libs)
+
+    //Room
+    implementation(libs.room.runtime)
+    ksp(libs.room.compiler)
+    implementation(libs.room.ktx)
+
+    //Kotlinx-Serialization
+    implementation(libs.kotlinx.serialization.json)
+
+    //kotlinx-coroutine-core
+    implementation(libs.kotlinx.coroutines.core)
+
+    implementation(libs.androidx.navigation.compose)
+
+    //splashscreen
+    implementation(libs.androidx.core.splashscreen)
+
+    implementation("io.coil-kt.coil3:coil-compose:3.0.4")
+
+    implementation("com.google.code.gson:gson:2.11.0")
+
+    implementation("io.coil-kt.coil3:coil-compose:3.0.4")
 }

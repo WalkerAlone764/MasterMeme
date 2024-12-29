@@ -1,6 +1,5 @@
 package com.upsidedowndev.mastermeme.ui.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -9,18 +8,31 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
+    primary = Color(234, 221, 255),
+    onPrimary = Color(29, 27, 32),
+    onBackground = Color.White,
     secondary = PurpleGrey80,
-    tertiary = Pink80
+    tertiary = Pink80,
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
+    outline = Color(0xFF79747E),
+    surface = Color(0xFF1D1B20),
+    onSurface = Color(0xffe6e0e9),
+    surfaceContainerLow = Color(0xff1D1B20),
+    surfaceContainerLowest = Color(0xff0F0D13),
+    surfaceContainerHigh = Color(0xff2b2930),
+   primary = Color(0xff333846),
+    onPrimary = Color(79, 55, 139),
+    primaryContainer = Color(0xffeaddff),
+    secondary = Color(0xffccc2dc),
+    error = Color(179, 38, 30)
+
+
 
     /* Other default colors to override
     background = Color(0xFFFFFBFE),
@@ -37,7 +49,7 @@ private val LightColorScheme = lightColorScheme(
 fun MasterMemeTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
+    dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
@@ -46,7 +58,7 @@ fun MasterMemeTheme(
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
 
-        darkTheme -> DarkColorScheme
+        darkTheme -> LightColorScheme
         else -> LightColorScheme
     }
 

@@ -1,0 +1,8 @@
+<paths>
+    <cache-path
+        name="my_cache"
+        path="/" />
+    <external-media-path
+        name="picture"
+        path="/"/>
+</paths>
