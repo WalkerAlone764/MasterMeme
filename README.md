@@ -97,9 +97,6 @@ git push origin feature/your-feature-name
 
 Create a Pull Request: Go to the original MasterMeme repository on GitHub and create a new pull request from your forked repository and branch.
 
-📄 License
-
-This project is licensed under the MIT License. See the LICENSE file for more details.
 
 🙏 Acknowledgements
 
